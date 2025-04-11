@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Name Click Tracker</title>
+  <title>Persistent Name Tracker</title>
   <style>
     .name-entry {
       margin-bottom: 10px;
@@ -14,25 +14,45 @@
 <body>
 
   <h1>Name Tracker</h1>
-  <textarea id="nameInput" placeholder="Enter names, one per line" rows="5" cols="30"></textarea><br>
-  <button onclick="initializeList()">Create List</button>
+
+  <input id="newNameInput" placeholder="Enter a name" />
+  <button onclick="addName()">Add Name</button>
 
   <div id="nameList"></div>
 
   <script>
     let nameData = [];
 
-    function initializeList() {
-      const input = document.getElementById('nameInput').value.trim();
-      const names = input.split('\n').map(name => name.trim()).filter(name => name !== '');
+    // Load saved data from localStorage
+    window.onload = function() {
+      const savedData = localStorage.getItem('nameData');
+      if (savedData) {
+        nameData = JSON.parse(savedData).map(entry => ({
+          name: entry.name,
+          date: entry.date ? new Date(entry.date) : null
+        }));
+        sortAndRender();
+      }
+    }
 
-      nameData = names.map(name => ({ name: name, date: null }));
+    function saveToLocalStorage() {
+      localStorage.setItem('nameData', JSON.stringify(nameData));
+    }
 
-      renderList();
+    function addName() {
+      const input = document.getElementById('newNameInput');
+      const name = input.value.trim();
+      if (!name) return;
+
+      nameData.push({ name, date: null });
+      input.value = '';
+      saveToLocalStorage();
+      sortAndRender();
     }
 
     function markDate(index) {
       nameData[index].date = new Date();
+      saveToLocalStorage();
       sortAndRender();
     }
 
