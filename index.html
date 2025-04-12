@@ -55,7 +55,13 @@
       saveToLocalStorage();
       sortAndRender();
     }
-
+    
+    function removeName(index) {
+      nameData.splice(index, 1);
+      saveToLocalStorage();
+      sortAndRender();
+    }
+    
     function sortAndRender() {
       nameData.sort((a, b) => {
         if (!a.date) return -1;
@@ -65,23 +71,34 @@
       renderList();
     }
 
-    function renderList() {
-      const container = document.getElementById('nameList');
-      container.innerHTML = '';
+function renderList() {
+  const container = document.getElementById('nameList');
+  container.innerHTML = '';
 
-      nameData.forEach((entry, index) => {
-        const div = document.createElement('div');
-        div.className = 'name-entry';
-        div.textContent = `${entry.name} ${entry.date ? '- ' + new Date(entry.date).toLocaleString() : ''}`;
+  nameData.forEach((entry, index) => {
+    const div = document.createElement('div');
+    div.className = 'name-entry';
 
-        const btn = document.createElement('button');
-        btn.textContent = 'Mark';
-        btn.onclick = () => markDate(index);
+    const nameText = document.createElement('span');
+    nameText.textContent = `${entry.name} ${entry.date ? '- ' + new Date(entry.date).toLocaleString() : ''}`;
+    
+    const markBtn = document.createElement('button');
+    markBtn.textContent = 'Mark';
+    markBtn.onclick = () => markDate(index);
 
-        div.appendChild(btn);
-        container.appendChild(div);
-      });
-    }
+    const removeBtn = document.createElement('button');
+    removeBtn.textContent = 'Remove';
+    removeBtn.onclick = () => removeName(index);
+
+    div.appendChild(nameText);
+    div.appendChild(markBtn);
+    div.appendChild(removeBtn);
+
+    container.appendChild(div);
+  });
+}
+
+    
   </script>
 
 </body>
