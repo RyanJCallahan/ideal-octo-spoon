@@ -1,0 +1,64 @@
+body {
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 1rem;
+  }
+
+  #leftPanel {
+    flex: 1;
+    min-width: 300px;
+    margin-right: 20px;
+  }
+
+  #rightPanel {
+    flex: 1;
+    min-width: 250px;
+    border-left: 2px solid #ffffff;
+    padding-left: 20px;
+  }
+
+  .name-entry {
+    margin-bottom: 10px;
+  }
+
+  .calendar-entry {
+    margin-bottom: 8px;
+    padding: 6px;
+    background-color: #f9f9f9;
+    border-left: 4px solid #4caf50;
+  }
+
+  #calendarGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+  }
+  
+  .calendar-day {
+    border: 1px solid #ccc;
+    padding: 8px;
+    min-height: 80px;
+    font-size: 0.8rem;
+    background-color: #fff;
+    position: relative;
+  }
+  
+  .calendar-day.today {
+    border: 2px solid #4caf50;
+    background-color: #eafbea;
+  }
+  
+  .day-number {
+    font-weight: bold;
+  }
+  
+  .event {
+    margin-top: 4px;
+    font-size: 0.75rem;
+    background-color: #def;
+    padding: 2px 4px;
+    border-radius: 4px;
+  }
+  
