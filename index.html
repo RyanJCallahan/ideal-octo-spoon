@@ -1,19 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Persistent Name Tracker</title>
-  <style>
-    .name-entry {
-      margin-bottom: 10px;
-    }
-    button {
-      margin-left: 10px;
-    }
-  </style>
+  <title>Persistent Friend Tracker</title>
+<style>
+  body {
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 1rem;
+  }
+
+  #leftPanel {
+    flex: 1;
+    min-width: 300px;
+    margin-right: 20px;
+  }
+
+  #rightPanel {
+    flex: 1;
+    min-width: 250px;
+    border-left: 2px solid #eee;
+    padding-left: 20px;
+  }
+
+  .name-entry {
+    margin-bottom: 10px;
+  }
+
+  .calendar-entry {
+    margin-bottom: 8px;
+    padding: 6px;
+    background-color: #f9f9f9;
+    border-left: 4px solid #4caf50;
+  }
+</style>
+
 </head>
 <body>
 
-  <h1>Name Tracker</h1>
+  <h1>Friend Tracker</h1>
+
+  <div id="leftPanel">
+  <input id="newNameInput" placeholder="Enter a name" />
+  <button onclick="addName()">Add Name</button>
+  <div id="nameList"></div>
+  </div>
+
+  <div id="rightPanel">
+  <h3>📅 This Month</h3>
+  <div id="calendarList"></div>
+  </div>
+
 
   <input id="newNameInput" placeholder="Enter a name" />
   <button onclick="addName()">Add Name</button>
@@ -69,6 +107,7 @@
         return new Date(a.date) - new Date(b.date);
       });
       renderList();
+      renderCalendar();
     }
 
 function renderList() {
@@ -95,6 +134,34 @@ function renderList() {
     div.appendChild(removeBtn);
 
     container.appendChild(div);
+  });
+}
+
+function renderCalendar() {
+  const cal = document.getElementById('calendarList');
+  cal.innerHTML = '';
+
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
+
+  const monthlyEntries = nameData.filter(entry => {
+    if (!entry.date) return false;
+    const d = new Date(entry.date);
+    return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+  });
+
+  if (monthlyEntries.length === 0) {
+    cal.innerHTML = '<p>No dates yet this month.</p>';
+    return;
+  }
+
+  monthlyEntries.forEach(entry => {
+    const div = document.createElement('div');
+    div.className = 'calendar-entry';
+    const d = new Date(entry.date);
+    div.textContent = `${entry.name} — ${d.toLocaleDateString()}`;
+    cal.appendChild(div);
   });
 }
 
